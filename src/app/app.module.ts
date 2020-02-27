@@ -9,6 +9,7 @@ import { ChartComponent } from './chart/chart.component';
 import { IndexComponent } from './index/index.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
 	declarations: [
@@ -23,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
         ReactiveFormsModule,
 		AppRoutingModule,
 		HttpClientModule,
+		ChartsModule,
 		RouterModule.forRoot([
 			{ path: '', component: IndexComponent },
 			{ path: 'location/:location', component: IndexComponent },
