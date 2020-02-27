@@ -3,16 +3,32 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LocationComponent } from './location/location.component';
+import { ChartComponent } from './chart/chart.component';
+import { IndexComponent } from './index/index.component';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		LocationComponent,
+		ChartComponent,
+		IndexComponent
+	],
+	imports: [
+		BrowserModule,
+		FormsModule,
+        ReactiveFormsModule,
+		AppRoutingModule,
+		HttpClientModule,
+		RouterModule.forRoot([
+			{ path: '', component: IndexComponent },
+			{ path: 'location/:location', component: IndexComponent },
+		])
+	],
+	providers: [],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }
