@@ -1,3 +1,11 @@
 <div>
-	<canvas baseChart [datasets]="cData" [labels]="cLabels" [options]="cOptions" [legend]="cLegend" [chartType]="cType"></canvas>
+	<canvas
+		baseChart
+		#chart="base-chart"
+		[datasets]="cData"
+		[labels]="cLabels"
+		[options]="cOptions"
+		[legend]="cLegend"
+		[chartType]="cType"
+	></canvas>
 </div>
