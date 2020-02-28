@@ -23,7 +23,6 @@ export class ChartComponent implements OnInit {
 		scales: {
 			xAxes: [{
 				ticks: {
-					autoSkip: false,
 					maxRotation: 0,
 				}
 			}],
@@ -73,6 +72,17 @@ export class ChartComponent implements OnInit {
 					display: true,
 					labelString: 'mm/h',
 				}
+			}, {
+				id: 'daynight',
+				type: 'linear',
+				gridLines: {
+					drawOnChartArea: false,
+				},
+				ticks: {
+					min: 0,
+					max: 1,
+				},
+				display: true,
 			}]
 		},
 		tooltips: {
@@ -110,27 +120,47 @@ export class ChartComponent implements OnInit {
 
 	clear(): void {
 		this.cData = [
-			{ data: [], label: 'Temperature', ...this.lineOptions, yAxisID: 'temperature', borderColor: '#71a95a' },
-			{ data: [], label: 'Wind', yAxisID: 'wind', backgroundColor: '#ec3d74', ...this.barOptions },
-			{ data: [], label: 'Rain', backgroundColor: '#4d87c1', yAxisID: 'rain', ...this.barOptions },
 			{
+				data: [],
+				label: 'Temperature',
+				yAxisID: 'temperature',
+				borderColor: '#71a95a',
+				...this.lineOptions,
+			}, {
+				data: [],
+				label: 'Wind',
+				yAxisID: 'wind',
+				backgroundColor: '#ec3d74',
+				...this.barOptions,
+			}, {
+				data: [],
+				label: 'Rain',
+				yAxisID: 'rain',
+				backgroundColor: '#4d87c1',
+				...this.barOptions,
+			}, {
 				data: [],
 				label: 'Clouds (low)',
 				backgroundColor: 'rgba(108, 86, 123, .33)',
 				...this.fillOptions
-			},
-			{
+			}, {
 				data: [],
 				label: 'Clouds (medium)',
 				backgroundColor: 'rgba(192, 108, 132, .33)',
 				...this.fillOptions
-			},
-			{
+			}, {
 				data: [],
 				label: 'Clouds (high)',
 				backgroundColor: 'rgba(248, 177, 149, .33)',
 				...this.fillOptions
-			},
+			}, {
+				data: [],
+				label: 'Day/night',
+				backgroundColor: 'rgba(0,0,0, .1)',
+				...this.fillOptions,
+				yAxisID: 'daynight',
+				steppedLine: true,
+			}
 		];
 		this.cLabels = [];
 	}
@@ -155,8 +185,9 @@ export class ChartComponent implements OnInit {
 				if(count > limit) break;
 
 				let point = changes.data.currentValue[i];
+				let date = (new Date(i));
 
-				this.cLabels.push(new Date(i).toLocaleTimeString([], {
+				this.cLabels.push(date.toLocaleTimeString([], {
 					hour: '2-digit',
 				}));
 
@@ -170,6 +201,12 @@ export class ChartComponent implements OnInit {
 				this.cData[3].data.push(point.clouds.low);
 				this.cData[4].data.push(point.clouds.medium);
 				this.cData[5].data.push(point.clouds.high);
+
+				if(date.getHours() > 18  || date.getHours() < 7) {
+					this.cData[6].data.push(1);
+				} else {
+					this.cData[6].data.push(0);
+				}
 
 				count++;
 			}
