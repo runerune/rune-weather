@@ -169,13 +169,13 @@ export class ChartComponent implements OnInit {
 		if(changes.data) {
 			this.clear();
 
-			let limit = 48;
+			const limit = 48;
 			let count = 0;
 
 			let minTemp = Infinity;
 
 			for(let i in changes.data.currentValue) {
-				let point = changes.data.currentValue[i];
+				const point = changes.data.currentValue[i];
 				if(point.temp < minTemp) minTemp = point.temp;
 			}
 
@@ -184,16 +184,16 @@ export class ChartComponent implements OnInit {
 			for(let i in changes.data.currentValue) {
 				if(count > limit) break;
 
-				let point = changes.data.currentValue[i];
-				let date = (new Date(i));
+				const point = changes.data.currentValue[i];
+				const date = (new Date(i));
 
 				this.cLabels.push(date.toLocaleTimeString([], {
 					hour: '2-digit',
 				}));
 
-				let changedTemp = point.temp-minTemp;
+				const changedTemp = point.temp-minTemp;
 
-				let windKmh = point.wind*3.6;
+				const windKmh = point.wind*3.6;
 
 				this.cData[0].data.push(changedTemp);
 				this.cData[1].data.push([windKmh, windKmh-0.2]);

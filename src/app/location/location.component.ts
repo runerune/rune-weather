@@ -39,7 +39,7 @@ export class LocationComponent implements OnInit {
 				const selectedLocation = params.get('location');
 
 				for(let i in this.locations) {
-					let candidate = this.locations[i];
+					const candidate = this.locations[i];
 
 					if(candidate.name === selectedLocation) {
 						this.locationForm.controls['location'].setValue(i.toString());

@@ -8,17 +8,17 @@ import { SimplifiedForecastRain } from './interface/SimplifiedForecastRain';
 })
 export class SimplifyWeatherService {
 	from(data: MoWeatherData) {
-		let root = data.weatherdata.product[0];
+		const root = data.weatherdata.product[0];
 
-		let standardData = {} as SimplifiedForecast<number>;
-		let rainData = {} as SimplifiedForecastRain<number>;
+		const standardData = {} as SimplifiedForecast<number>;
+		const rainData = {} as SimplifiedForecastRain<number>;
 
 		for(let hour of root.time) {
-			let cast = hour.location[0];
+			const cast = hour.location[0];
 
 			if(cast.precipitation) {
-				let startDate = (new Date(hour.$.from)).getTime();
-				let endDate = (new Date(hour.$.to)).getTime();
+				const startDate = (new Date(hour.$.from)).getTime();
+				const endDate = (new Date(hour.$.to)).getTime();
 
 				if(endDate-startDate === 3600000) {
 					rainData[hour.$.from] = parseFloat(cast.precipitation?.[0].$.value);

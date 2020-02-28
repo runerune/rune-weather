@@ -6,7 +6,7 @@ import { Parser } from 'xml2js';
 })
 export class XmlTransformService {
 	async from(input: string): Promise<Object> {
-		let parser = new Parser();
+		const parser = new Parser();
 		return parser.parseStringPromise(input);
 	}
 }
