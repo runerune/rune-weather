@@ -33,7 +33,6 @@ export class ChartComponent implements OnInit {
 				//stacked: true,
 				ticks: {
 					beginAtZero: true,
-					max: 150,
 				},
 				type: 'linear',
 				position: 'right',
@@ -55,6 +54,10 @@ export class ChartComponent implements OnInit {
 					display: true,
 					labelString: 'km/h',
 				},
+				ticks: {
+					max: 50,
+					min: 0,
+				},
 				stacked: true,
 			}, {
 				id: 'rain',
@@ -75,7 +78,7 @@ export class ChartComponent implements OnInit {
 		tooltips: {
 			enabled: false,
 		},
-		events: []
+		events: [],
 	};
 
 	cLegend = true;
@@ -107,25 +110,25 @@ export class ChartComponent implements OnInit {
 
 	clear(): void {
 		this.cData = [
-			{ data: [], label: 'Temperature', ...this.lineOptions, yAxisID: 'temperature', borderColor: '#00a8cc' },
-			{ data: [], label: 'Wind', yAxisID: 'wind', backgroundColor: '#d45079', ...this.barOptions },
-			{ data: [], label: 'Rain', backgroundColor: '#5fbdb0', yAxisID: 'rain', ...this.barOptions },
+			{ data: [], label: 'Temperature', ...this.lineOptions, yAxisID: 'temperature', borderColor: '#71a95a' },
+			{ data: [], label: 'Wind', yAxisID: 'wind', backgroundColor: '#ec3d74', ...this.barOptions },
+			{ data: [], label: 'Rain', backgroundColor: '#4d87c1', yAxisID: 'rain', ...this.barOptions },
 			{
 				data: [],
 				label: 'Clouds (low)',
-				backgroundColor: 'rgba(108, 86, 123, .5)',
+				backgroundColor: 'rgba(108, 86, 123, .33)',
 				...this.fillOptions
 			},
 			{
 				data: [],
 				label: 'Clouds (medium)',
-				backgroundColor: 'rgba(192, 108, 132, .5)',
+				backgroundColor: 'rgba(192, 108, 132, .33)',
 				...this.fillOptions
 			},
 			{
 				data: [],
 				label: 'Clouds (high)',
-				backgroundColor: 'rgba(248, 177, 149, .5)',
+				backgroundColor: 'rgba(248, 177, 149, .33)',
 				...this.fillOptions
 			},
 		];
@@ -162,7 +165,7 @@ export class ChartComponent implements OnInit {
 				let windKmh = point.wind*3.6;
 
 				this.cData[0].data.push(changedTemp);
-				this.cData[1].data.push([windKmh, windKmh-0.1]);
+				this.cData[1].data.push([windKmh, windKmh-0.2]);
 				this.cData[2].data.push(point.rain);
 				this.cData[3].data.push(point.clouds.low);
 				this.cData[4].data.push(point.clouds.medium);

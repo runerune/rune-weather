@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output, OnInit, SimpleChange } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
 
 @Component({
 	selector: 'app-location',
@@ -20,18 +22,39 @@ export class LocationComponent implements OnInit {
 
 	constructor(
 		private formBuilder: FormBuilder,
+		private router: Router,
+		private route: ActivatedRoute,
 	) {
 
 	}
 
 	ngOnInit(): void {
 		this.locationForm = this.formBuilder.group({
-			location: '',
+			location: '2',
+		});
+
+		this.route.paramMap.subscribe(params => {
+			if(params.has('location')) {
+				const selectedLocation = params.get('location');
+
+				for(let i in this.locations) {
+					let candidate = this.locations[i];
+
+					if(candidate.name === selectedLocation) {
+						this.locationForm.controls['location'].setValue(i.toString());
+						this.changed.emit(candidate);
+						return;
+					}
+				}
+			} else {
+				this.changed.emit(this.locations[2]);
+			}
 		});
 	}
 
 	onSubmit(data: { location: string }): void {
 		const location = this.locations[parseInt(data.location)];
+		this.router.navigateByUrl('/location/'+location.name);
 		this.changed.emit(location);
 	}
 

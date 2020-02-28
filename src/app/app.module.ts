@@ -28,7 +28,7 @@ import { ChartsModule } from 'ng2-charts';
 		RouterModule.forRoot([
 			{ path: '', component: IndexComponent },
 			{ path: 'location/:location', component: IndexComponent },
-		])
+		], { useHash: true })
 	],
 	providers: [],
 	bootstrap: [AppComponent]
