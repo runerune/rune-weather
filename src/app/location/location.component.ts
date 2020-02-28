@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, EventEmitter, Output, OnInit, SimpleChange } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
 	selector: 'app-location',
@@ -15,7 +15,7 @@ export class LocationComponent implements OnInit {
 		{ name: 'Baz city', lat: -45, lon: 12, msl: -6 },
 	];
 
-	locationForm;
+	locationForm: FormGroup;
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -29,8 +29,8 @@ export class LocationComponent implements OnInit {
 		});
 	}
 
-	onSubmit(data) {
-		let location = this.locations[parseInt(data.location)];
+	onSubmit(data: { location: string }): void {
+		const location = this.locations[parseInt(data.location)];
 		this.changed.emit(location);
 	}
 

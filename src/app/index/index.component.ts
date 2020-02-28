@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { XmlTransformService } from '../xml-transform.service';
 import { SimplifyService } from '../simplify.service';
+import { Location } from '../interface/Location';
+import { SimplifiedMoData } from '../interface/SimplifiedMoData';
 
 @Component({
 	selector: 'app-index',
@@ -9,7 +11,7 @@ import { SimplifyService } from '../simplify.service';
 	styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
-	transformedSet = {};
+	transformedSet: SimplifiedMoData<number> = {};
 
 	constructor(
 		private dataService: DataService,
@@ -20,7 +22,7 @@ export class IndexComponent implements OnInit {
 	ngOnInit(): void {
 	}
 
-	fetch(location) {
+	fetch(location: Location): void {
 		this.dataService.load(location.lat, location.lon, location.msl)
 			.then(data => this.xmlTransformService.from(data))
 			.then(result => this.simplifyService.from(result))

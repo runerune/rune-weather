@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 
 @Component({
 	selector: 'app-chart',
@@ -38,7 +38,7 @@ export class ChartComponent implements OnInit {
 		this.clear();
 	}
 
-	clear() {
+	clear(): void {
 		this.cData = [
 			{ data: [], label: 'Temperature' },
 			{ data: [], label: 'Wind' },
@@ -51,7 +51,7 @@ export class ChartComponent implements OnInit {
 		this.cLabels = [];
 	}
 
-	ngOnChanges(changes) {
+	ngOnChanges(changes: SimpleChanges): void {
 		if(changes.data) {
 			this.clear();
 
@@ -77,9 +77,7 @@ export class ChartComponent implements OnInit {
 				this.cData[6].data.push(point.clouds.high);
 
 				count++;
-
 			}
-
 		}
 	}
 }

@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
+import { SimplifiedMoData } from './interface/SimplifiedMoData';
+import { MoInput } from './interface/MoInput';
+import { SimplifiedMoDataRain } from './interface/SimplifiedMoDataRain';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class SimplifyService {
-	from(data) {
+	from(data: MoInput) {
 		let root = data.weatherdata.product[0];
 
-		let standardData = {};
-		let rainData = {};
+		let standardData = {} as SimplifiedMoData<number>;
+		let rainData = {} as SimplifiedMoDataRain<number>;
 
 		for(let hour of root.time) {
 			let cast = hour.location[0];
@@ -31,6 +34,7 @@ export class SimplifyService {
 						high: parseFloat(cast.highClouds?.[0].$.percent),
 					},
 					fog: parseFloat(cast.fog?.[0].$.percent) | 0,
+					rain: 0,
 				}
 			}
 
