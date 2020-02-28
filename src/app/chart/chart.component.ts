@@ -16,6 +16,7 @@ export class ChartComponent implements OnInit {
 	cOptions = {
 		scaleShowVerticalLines: false,
 		responsive: true,
+		maintainAspectRatio: false,
 		animation: {
 			duration: 0,
 		},
@@ -52,7 +53,7 @@ export class ChartComponent implements OnInit {
 				},
 				scaleLabel: {
 					display: true,
-					labelString: 'm/h',
+					labelString: 'km/h',
 				},
 				stacked: true,
 			}, {
@@ -71,7 +72,12 @@ export class ChartComponent implements OnInit {
 				}
 			}]
 		},
+		tooltips: {
+			enabled: false,
+		},
+		events: []
 	};
+
 	cLegend = true;
 	cType = 'line';
 
@@ -96,6 +102,7 @@ export class ChartComponent implements OnInit {
 		type: 'bar',
 		stack: 'windRain',
 		barPercentage: 1,
+		pointRadius: 0,
 	}
 
 	clear(): void {
@@ -152,8 +159,10 @@ export class ChartComponent implements OnInit {
 
 				let changedTemp = point.temp-minTemp;
 
+				let windKmh = point.wind*3.6;
+
 				this.cData[0].data.push(changedTemp);
-				this.cData[1].data.push([point.wind, point.wind-0.03]);
+				this.cData[1].data.push([windKmh, windKmh-0.1]);
 				this.cData[2].data.push(point.rain);
 				this.cData[3].data.push(point.clouds.low);
 				this.cData[4].data.push(point.clouds.medium);

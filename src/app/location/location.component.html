@@ -1,11 +1,7 @@
-<form class="form-inline" [formGroup]="locationForm" (ngSubmit)="onSubmit(locationForm.value)">
+<form [formGroup]="locationForm">
 	<div class="form-group">
-		<div class="input-group">
-			<div class="input-group-addon">Location:</div>
-			<select class="form-control" id="location" formControlName="location">
-				<option *ngFor="let location of locations; index as i" [value]="i">{{location.name}}</option>
-			</select>
-		</div>
-		<button type="submit" class="btn btn-primary">OK</button>
+		<select class="form-control" formControlName="location" (change)="onSubmit(locationForm.value)">
+			<option *ngFor="let location of locations; index as i" [value]="i">{{location.name}}</option>
+		</select>
 	</div>
 </form>
