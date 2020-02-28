@@ -1,6 +1,6 @@
 import { MoProduct } from './MoProduct';
 
-export interface MoInput {
+export interface MoWeatherData {
 	weatherdata?: {
 		product: Array<MoProduct>
 	}

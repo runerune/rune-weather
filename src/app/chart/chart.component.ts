@@ -203,7 +203,7 @@ export class ChartComponent implements OnInit {
 				this.cData[5].data.push(point.clouds.high);
 
 				if(date.getHours() > 18  || date.getHours() < 7) {
-					this.cData[6].data.push(1);
+					this.cData[6].data.push(0.05);
 				} else {
 					this.cData[6].data.push(0);
 				}

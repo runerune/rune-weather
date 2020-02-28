@@ -1,5 +1,5 @@
-import { MoHour } from './MoHour';
+import { MoWeatherHour } from './MoWeatherHour';
 
 export interface MoProduct {
-	time: Array<MoHour>,
+	time: Array<MoWeatherHour>,
 }

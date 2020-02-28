@@ -1,4 +1,4 @@
-export interface SimplifiedMoData<T> {
+export interface SimplifiedForecast<T> {
 	[key: string] : {
 		temp: T,
 		wind: T,

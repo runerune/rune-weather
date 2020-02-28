@@ -19,6 +19,7 @@ export class LocationComponent implements OnInit {
 	];
 
 	locationForm: FormGroup;
+	firstRun: boolean = true;
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -42,7 +43,10 @@ export class LocationComponent implements OnInit {
 
 					if(candidate.name === selectedLocation) {
 						this.locationForm.controls['location'].setValue(i.toString());
-						this.changed.emit(candidate);
+						if(this.firstRun) {
+							this.changed.emit(candidate);
+							this.firstRun = false;
+						}
 						return;
 					}
 				}

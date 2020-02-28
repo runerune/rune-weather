@@ -1,6 +1,6 @@
 import { MoForecast } from './MoForecast';
 
-export interface MoHour {
+export interface MoWeatherHour {
 	$: { from: string, to: string }
 	location: Array<MoForecast>
 }

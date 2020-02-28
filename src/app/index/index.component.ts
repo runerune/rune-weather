@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { XmlTransformService } from '../xml-transform.service';
-import { SimplifyService } from '../simplify.service';
 import { Location } from '../interface/Location';
-import { SimplifiedMoData } from '../interface/SimplifiedMoData';
+import { SimplifiedForecast } from '../interface/SimplifiedForecast';
+import { SimplifyWeatherService } from '../simplify-weather.service';
+import { SimplifySuntimeService } from '../simplify-suntime.service';
 
 @Component({
 	selector: 'app-index',
@@ -11,24 +12,37 @@ import { SimplifiedMoData } from '../interface/SimplifiedMoData';
 	styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
-	transformedSet: SimplifiedMoData<number> = {};
+	transformedSet: SimplifiedForecast<number> = {};
 
 	constructor(
 		private dataService: DataService,
 		private xmlTransformService: XmlTransformService,
-		private simplifyService: SimplifyService,
+		private simplifyWeatherService: SimplifyWeatherService,
+		private simplifySuntimeService: SimplifySuntimeService,
 	) { }
 
 	ngOnInit(): void {
 	}
 
 	fetch(location: Location): void {
-		this.dataService.load(location.lat, location.lon, location.msl)
-			.then(data => this.xmlTransformService.from(data))
-			.then(result => this.simplifyService.from(result))
-			.then(simplified => {
-				this.transformedSet = simplified;
-			})
+		Promise.all([
+			this.dataService.forecast(location.lat, location.lon, location.msl),
+			this.dataService.suntime(location.lat, location.lon)
+		]).then(([forecastData, sunData]) => {
+			return Promise.all([
+				this.xmlTransformService.from(forecastData),
+				this.xmlTransformService.from(sunData)
+			])
+		})
+		.then(([forecastResult, sunResult]) => {
+			return Promise.all([
+				this.simplifyWeatherService.from(forecastResult),
+				this.simplifySuntimeService.from(sunResult)
+			])
+		}).then(([SimplifiedForecastRain, simplifiedSuntime]) => {
+			this.transformedSet = SimplifiedForecastRain;
+			console.log(simplifiedSuntime);
+		});
 	}
 
 }

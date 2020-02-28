@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { SimplifiedMoData } from './interface/SimplifiedMoData';
-import { MoInput } from './interface/MoInput';
-import { SimplifiedMoDataRain } from './interface/SimplifiedMoDataRain';
+import { SimplifiedForecast } from './interface/SimplifiedForecast';
+import { MoWeatherData } from './interface/MoWeatherData';
+import { SimplifiedForecastRain } from './interface/SimplifiedForecastRain';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class SimplifyService {
-	from(data: MoInput) {
+export class SimplifyWeatherService {
+	from(data: MoWeatherData) {
 		let root = data.weatherdata.product[0];
 
-		let standardData = {} as SimplifiedMoData<number>;
-		let rainData = {} as SimplifiedMoDataRain<number>;
+		let standardData = {} as SimplifiedForecast<number>;
+		let rainData = {} as SimplifiedForecastRain<number>;
 
 		for(let hour of root.time) {
 			let cast = hour.location[0];
