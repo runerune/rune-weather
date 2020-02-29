@@ -5,6 +5,7 @@ import { Location } from '../interface/Location';
 import { SimplifiedForecast } from '../interface/SimplifiedForecast';
 import { SimplifyWeatherService } from '../simplify-weather.service';
 import { SimplifySuntimeService } from '../simplify-suntime.service';
+import { SimplifiedSuntime } from '../interface/SimplifiedSuntime';
 
 @Component({
 	selector: 'app-index',
@@ -12,7 +13,10 @@ import { SimplifySuntimeService } from '../simplify-suntime.service';
 	styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
-	transformedSet: SimplifiedForecast<number> = {};
+	transformedSet: {
+		forecast?: SimplifiedForecast<number>,
+		suntime?: SimplifiedSuntime<number>,
+	 } = {};
 
 	constructor(
 		private dataService: DataService,
@@ -39,9 +43,11 @@ export class IndexComponent implements OnInit {
 				this.simplifyWeatherService.from(forecastResult),
 				this.simplifySuntimeService.from(sunResult)
 			])
-		}).then(([SimplifiedForecastRain, simplifiedSuntime]) => {
-			this.transformedSet = SimplifiedForecastRain;
-			console.log(simplifiedSuntime);
+		}).then(([simplifiedForecast, simplifiedSuntime]) => {
+			this.transformedSet = {
+				forecast: simplifiedForecast,
+				suntime: simplifiedSuntime,
+			}
 		});
 	}
 

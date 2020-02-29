@@ -20,7 +20,7 @@ export class DataService {
 		const dateFormatted = date.toISOString().slice(0,10);
 		const offset = this.formatOffset(date.getTimezoneOffset()*-1);
 
-		const url = 'https://api.met.no/weatherapi/sunrise/2.0/?lat='+lat+'&lon='+lon+'&date='+dateFormatted+'&offset='+offset;
+		const url = 'https://api.met.no/weatherapi/sunrise/2.0/?lat='+lat+'&lon='+lon+'&date='+dateFormatted+'&offset='+offset+'&days=7';
 		return this.http.get(url, {responseType: 'text'}).toPromise();
 	}
 

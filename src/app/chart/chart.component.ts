@@ -29,7 +29,6 @@ export class ChartComponent implements OnInit {
 			yAxes: [{
 				display: false,
 				id: 'clouds',
-				//stacked: true,
 				ticks: {
 					beginAtZero: true,
 				},
@@ -38,14 +37,19 @@ export class ChartComponent implements OnInit {
 			}, {
 				id: 'temperature',
 				type: 'linear',
+				offset: true,
 				scaleLabel: {
 					display: true,
 					labelString: '°C',
+				},
+				ticks: {
+					stepSize: 1,
 				},
 				stacked: true,
 			}, {
 				id: 'wind',
 				type: 'linear',
+				offset: true,
 				gridLines: {
 					drawOnChartArea: false,
 				},
@@ -54,7 +58,7 @@ export class ChartComponent implements OnInit {
 					labelString: 'km/h',
 				},
 				ticks: {
-					max: 50,
+					suggestedMax: 50,
 					min: 0,
 				},
 				stacked: true,
@@ -66,7 +70,7 @@ export class ChartComponent implements OnInit {
 				},
 				position: 'right',
 				ticks: {
-					max: 3
+					suggestedMax: 3
 				},
 				scaleLabel: {
 					display: true,
@@ -79,10 +83,10 @@ export class ChartComponent implements OnInit {
 					drawOnChartArea: false,
 				},
 				ticks: {
-					min: 0,
+					min: -100,
 					max: 1,
 				},
-				display: true,
+				display: false,
 			}]
 		},
 		tooltips: {
@@ -125,41 +129,48 @@ export class ChartComponent implements OnInit {
 				label: 'Temperature',
 				yAxisID: 'temperature',
 				borderColor: '#71a95a',
+				order: 3,
 				...this.lineOptions,
 			}, {
 				data: [],
 				label: 'Wind',
 				yAxisID: 'wind',
 				backgroundColor: '#ec3d74',
+				order: 2,
 				...this.barOptions,
 			}, {
 				data: [],
 				label: 'Rain',
 				yAxisID: 'rain',
 				backgroundColor: '#4d87c1',
+				order: 4,
 				...this.barOptions,
 			}, {
 				data: [],
 				label: 'Clouds (low)',
 				backgroundColor: 'rgba(108, 86, 123, .33)',
+				order: 5,
 				...this.fillOptions
 			}, {
 				data: [],
 				label: 'Clouds (medium)',
 				backgroundColor: 'rgba(192, 108, 132, .33)',
+				order: 6,
 				...this.fillOptions
 			}, {
 				data: [],
 				label: 'Clouds (high)',
 				backgroundColor: 'rgba(248, 177, 149, .33)',
+				order: 7,
 				...this.fillOptions
 			}, {
 				data: [],
-				label: 'Day/night',
-				backgroundColor: 'rgba(0,0,0, .1)',
+				label: 'Night',
+				backgroundColor: '#666',
 				...this.fillOptions,
 				yAxisID: 'daynight',
 				steppedLine: true,
+				order: 1
 			}
 		];
 		this.cLabels = [];
@@ -172,41 +183,28 @@ export class ChartComponent implements OnInit {
 			const limit = 48;
 			let count = 0;
 
-			let minTemp = Infinity;
-
-			for(let i in changes.data.currentValue) {
-				const point = changes.data.currentValue[i];
-				if(point.temp < minTemp) minTemp = point.temp;
-			}
-
-			minTemp -= 1;
-
-			for(let i in changes.data.currentValue) {
+			for(let i in changes.data.currentValue.forecast) {
 				if(count > limit) break;
 
-				const point = changes.data.currentValue[i];
+				const point = changes.data.currentValue.forecast[i];
 				const date = (new Date(i));
 
 				this.cLabels.push(date.toLocaleTimeString([], {
 					hour: '2-digit',
 				}));
 
-				const changedTemp = point.temp-minTemp;
-
 				const windKmh = point.wind*3.6;
 
-				this.cData[0].data.push(changedTemp);
+				this.cData[0].data.push(point.temp);
 				this.cData[1].data.push([windKmh, windKmh-0.2]);
 				this.cData[2].data.push(point.rain);
 				this.cData[3].data.push(point.clouds.low);
 				this.cData[4].data.push(point.clouds.medium);
 				this.cData[5].data.push(point.clouds.high);
 
-				if(date.getHours() > 18  || date.getHours() < 7) {
-					this.cData[6].data.push(0.05);
-				} else {
-					this.cData[6].data.push(0);
-				}
+				const matchedSuntime = changes.data.currentValue.suntime[i];
+
+				this.cData[6].data.push(matchedSuntime);
 
 				count++;
 			}
