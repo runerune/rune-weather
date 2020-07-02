@@ -13,6 +13,8 @@ export class ChartComponent implements OnInit {
 	cData = [];
 	cLabels = [];
 
+	visible = false;
+
 	cOptions = {
 		scaleShowVerticalLines: false,
 		responsive: true,
@@ -208,6 +210,11 @@ export class ChartComponent implements OnInit {
 
 				count++;
 			}
+
+			setTimeout(() => {
+				// prevent flashing of empty chart on first load
+				this.visible = true;
+			}, 100);
 		}
 	}
 }
